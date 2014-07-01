@@ -678,16 +678,16 @@
                     [self setSelectedSegmentIndex:index animated:NO notify:YES];
                     return;
                 }
-            }else {
-                if ([self.selectionIndicatorStripLayer superlayer] == nil && self.selectionStyle != HMSegmentedControlSelectionStyleBoxNoStripe) {
+            }else if (!self.selectionStyle == HMSegmentedControlSelectionStyleBoxNoStripe) {
+                if ([self.selectionIndicatorStripLayer superlayer] == nil) {
                     [self.scrollView.layer addSublayer:self.selectionIndicatorStripLayer];
+
+                    if (self.selectionStyle == HMSegmentedControlSelectionStyleBox && [self.selectionIndicatorBoxLayer superlayer] == nil)
+                        [self.scrollView.layer insertSublayer:self.selectionIndicatorBoxLayer atIndex:0];
+
+                    [self setSelectedSegmentIndex:index animated:NO notify:YES];
+                    return;
                 }
-
-                if ((self.selectionStyle == HMSegmentedControlSelectionStyleBox || self.selectionStyle == HMSegmentedControlSelectionStyleBoxNoStripe) && [self.selectionIndicatorBoxLayer superlayer] == nil)
-                    [self.scrollView.layer insertSublayer:self.selectionIndicatorBoxLayer atIndex:0];
-
-                [self setSelectedSegmentIndex:index animated:NO notify:YES];
-                return;
             }
 
             if (notify)
