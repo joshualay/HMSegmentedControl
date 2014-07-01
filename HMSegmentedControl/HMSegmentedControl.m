@@ -156,7 +156,7 @@
     self.selectionIndicatorStripLayer = [CALayer layer];
     
     self.selectionIndicatorBoxLayer = [CALayer layer];
-    self.selectionIndicatorBoxLayer.opacity = 0.2;
+    self.selectionIndicatorBoxLayer.opacity = 0.9;
     self.selectionIndicatorBoxLayer.borderWidth = 1.0f;
     
     self.contentMode = UIViewContentModeRedraw;
@@ -347,14 +347,14 @@
                 [self.scrollView.layer addSublayer:self.selectionIndicatorArrowLayer];
             }
         } else {
-            if (!self.selectionIndicatorStripLayer.superlayer) {
+            if (!self.selectionIndicatorStripLayer.superlayer && self.selectionStyle != HMSegmentedControlSelectionStyleBoxNoStripe) {
                 self.selectionIndicatorStripLayer.frame = [self frameForSelectionIndicator];
                 [self.scrollView.layer addSublayer:self.selectionIndicatorStripLayer];
-                
-                if (self.selectionStyle == HMSegmentedControlSelectionStyleBox && !self.selectionIndicatorBoxLayer.superlayer) {
-                    self.selectionIndicatorBoxLayer.frame = [self frameForFillerSelectionIndicator];
-                    [self.scrollView.layer insertSublayer:self.selectionIndicatorBoxLayer atIndex:0];
-                }
+            }
+
+            if ((self.selectionStyle == HMSegmentedControlSelectionStyleBox || self.selectionStyle == HMSegmentedControlSelectionStyleBoxNoStripe) && !self.selectionIndicatorBoxLayer.superlayer) {
+                self.selectionIndicatorBoxLayer.frame = [self frameForFillerSelectionIndicator];
+                [self.scrollView.layer insertSublayer:self.selectionIndicatorBoxLayer atIndex:0];
             }
         }
     }
@@ -679,17 +679,17 @@
                     return;
                 }
             }else {
-                if ([self.selectionIndicatorStripLayer superlayer] == nil) {
+                if ([self.selectionIndicatorStripLayer superlayer] == nil && self.selectionStyle != HMSegmentedControlSelectionStyleBoxNoStripe) {
                     [self.scrollView.layer addSublayer:self.selectionIndicatorStripLayer];
-                    
-                    if (self.selectionStyle == HMSegmentedControlSelectionStyleBox && [self.selectionIndicatorBoxLayer superlayer] == nil)
-                        [self.scrollView.layer insertSublayer:self.selectionIndicatorBoxLayer atIndex:0];
-                    
-                    [self setSelectedSegmentIndex:index animated:NO notify:YES];
-                    return;
                 }
+
+                if ((self.selectionStyle == HMSegmentedControlSelectionStyleBox || self.selectionStyle == HMSegmentedControlSelectionStyleBoxNoStripe) && [self.selectionIndicatorBoxLayer superlayer] == nil)
+                    [self.scrollView.layer insertSublayer:self.selectionIndicatorBoxLayer atIndex:0];
+
+                [self setSelectedSegmentIndex:index animated:NO notify:YES];
+                return;
             }
-            
+
             if (notify)
                 [self notifyForSegmentChangeToIndex:index];
             
