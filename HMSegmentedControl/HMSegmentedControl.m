@@ -678,7 +678,7 @@
                     [self setSelectedSegmentIndex:index animated:NO notify:YES];
                     return;
                 }
-            }else if (!self.selectionStyle == HMSegmentedControlSelectionStyleBoxNoStripe) {
+            }else if (self.selectionStyle != HMSegmentedControlSelectionStyleBoxNoStripe) {
                 if ([self.selectionIndicatorStripLayer superlayer] == nil) {
                     [self.scrollView.layer addSublayer:self.selectionIndicatorStripLayer];
 
