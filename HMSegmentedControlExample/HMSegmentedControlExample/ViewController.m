@@ -145,6 +145,12 @@
 
 #pragma mark - UIScrollViewDelegate
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat percentage = scrollView.contentOffset.x / scrollView.contentSize.width;
+    [self.segmentedControl4 scrollToPercentage:percentage];
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     CGFloat pageWidth = scrollView.frame.size.width;
     NSInteger page = scrollView.contentOffset.x / pageWidth;

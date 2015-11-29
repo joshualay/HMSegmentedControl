@@ -226,5 +226,6 @@ typedef enum {
 - (void)setSelectedSegmentIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)setIndexChangeBlock:(IndexChangeBlock)indexChangeBlock;
 - (void)setTitleFormatter:(HMTitleFormatterBlock)titleFormatter;
+- (void)scrollToPercentage:(CGFloat)percentage; // 0.0 -> 1.0
 
 @end

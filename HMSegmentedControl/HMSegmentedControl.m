@@ -768,6 +768,46 @@
     [self.scrollView scrollRectToVisible:rectToScrollTo animated:animated];
 }
 
+- (void)scrollToPercentage:(CGFloat)percentage {
+    CGRect rectForSelectedIndex;
+
+    CGFloat xPos = CGRectGetWidth(self.frame) * percentage;
+    rectForSelectedIndex = CGRectMake(xPos,
+                                      0,
+                                      self.segmentWidth,
+                                      self.frame.size.height);
+    CGRect rectToScrollTo = rectForSelectedIndex;
+
+    [self.scrollView scrollRectToVisible:rectToScrollTo animated:YES];
+
+    // Restore CALayer animations
+    self.selectionIndicatorArrowLayer.actions = nil;
+    self.selectionIndicatorStripLayer.actions = nil;
+    self.selectionIndicatorBoxLayer.actions = nil;
+
+    // Animate to new position
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.0f];
+    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    [self setArrowFrame];
+
+    CGRect boxlayerFrame = [self frameForSelectionIndicator];
+    boxlayerFrame.origin.x = xPos;
+
+    self.selectionIndicatorBoxLayer.frame = boxlayerFrame;
+
+    CGRect stripFrame = [self frameForSelectionIndicator];
+    stripFrame.origin.x = xPos;
+
+    self.selectionIndicatorStripLayer.frame = stripFrame;
+
+    CGRect boxFrame = [self frameForFillerSelectionIndicator];
+    boxFrame.origin.x = xPos;
+
+    self.selectionIndicatorBoxLayer.frame = boxFrame;
+    [CATransaction commit];
+}
+
 #pragma mark - Index Change
 
 - (void)setSelectedSegmentIndex:(NSInteger)index {
